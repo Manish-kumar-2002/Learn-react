@@ -4,6 +4,8 @@
 
 - **A Content Delivery Network or Content Distribution Network**: "(CDN) is a distributed network of servers that helps deliver content faster by serving it from the nearest location to the user. It improves performance, reduces server load, enhances security, and ensures better availability of web applications."
 
+---
+
 ## 2. Why do we use a CDN?
 
 - **Faster Load Times:** Since the content is served from the nearest server, it reduces latency and improves page speed.
@@ -14,11 +16,11 @@
 
 ---
 
-## 2. What is crossorigin and why do we use it in React CDN ?
+## 3. What is crossorigin and why do we use it in React CDN ?
 
 ### crossorigin
 
-The crossorigin attribute is used in HTML <script> and <link> tags to handle cross-origin requests (i.e., requests made to a different domain). It tells the browser how to handle CORS (Cross-Origin Resource Sharing) when loading external resources like scripts, stylesheets, and images.
+The crossorigin attribute is used in HTML \<script\> and &lt;link&gt; tags to handle cross-origin requests (i.e., requests made to a different domain). It tells the browser how to handle CORS (Cross-Origin Resource Sharing) when loading external resources like scripts, stylesheets, and images.
 
 ### Why do we use crossorigin in React CDN
 
@@ -45,6 +47,7 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 - **react.production.js:** Used for production (optimized for performance).
 
 ### Example: Using React via CDN
+
 ```
 <!-- Development Mode (for debugging) -->
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -55,18 +58,19 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
 ```
+
 ---
 
 ## 6. What is the difference between a framework and a library ?
 
-### framework
+### Library
 
 - **Definition**: A collection of functions and utilities that developers can call when needed.
 - **Control**: Developer controls when and how to use the library.
 - **Flexibility**: More flexible; can be used with different frameworks.
 - **Examples**: ReactJS (Library), jQuery, Axios
 
-### Library
+### Framework
 
 - **Definition**: A complete structure that provides rules, architecture, and tools to build applications.
 - **Control**: Framework controls the flow; the developer follows its structure.
@@ -129,16 +133,19 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 ---
 
 ## 11. What is NPM ?
+
 - NPM is a package manager.
 - It is the world’s largest software registry.
 
 ### Why Do We Use NPM?
+
 - Install JavaScript libraries (like React, Express, Lodash, etc.)
 - Manage dependencies in a project **(package.json)**
 - Run scripts (start, build, test, etc.)
 - Publish & share packages with the community
 
 ### Key Features of NPM
+
 - NPM Registry – A public database of JavaScript packages.
 - Package Management – Helps install, update, and remove dependencies.
 - Version Control – Supports semantic versioning to avoid breaking changes.
@@ -146,24 +153,46 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 
 ### Basic NPM Commands
 
-| Command                        | Description                                       |
-|--------------------------------|---------------------------------------------------|
-| `npm init`                     | Initializes a new project (creates `package.json`) |
-| `npm install <package>`        | Installs a package locally                        |
-| `npm install -g <package>`     | Installs a package globally                      |
-| `npm update <package>`         | Updates an installed package                     |
-| `npm uninstall <package>`      | Removes a package                                |
-| `npm start`                    | Runs the project’s start script                  |
-| `npm run build`                | Builds the project for production               |
+| Command                    | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `npm init`                 | Initializes a new project (creates `package.json`) |
+| `npm install <package>`    | Installs a package locally                         |
+| `npm install -g <package>` | Installs a package globally                        |
+| `npm update <package>`     | Updates an installed package                       |
+| `npm uninstall <package>`  | Removes a package                                  |
+| `npm start`                | Runs the project’s start script                    |
+| `npm run build`            | Builds the project for production                  |
 
 ---
 
-## 12. What is a package.json file ?
+## 12. What is NPX ?
+
+**NPX (Node Package eXecute)** is a tool that comes with NPM (5.2+) and allows you to run Node.js packages without installing them globally. It ensures you're using the latest version and helps execute one-time commands efficiently.
+
+#### Using NPM (Old Method):
+
+```javascript
+npm install -g create-react-app
+create-react-app my-app
+```
+
+#### Using NPX (Better Way):
+
+```
+npx create-react-app my-app
+```
+
+- No global install needed
+- Always runs the latest version
+
+## 13. What is a package.json file ?
+
 - The package.json file is the heart of the node.js system.
 - This file is a configuration file that stores important metadata about a project, including its dependencies, scripts, and project details
 - It is automatically created when you initialize a project using npm init or yarn init.
 
 ### Why Do We Use package.json?
+
 - Manages dependencies (like React, Express, etc.)
 - Tracks project metadata (name, version, author, etc.)
 - Defines scripts (npm start, npm run build, etc.)
@@ -171,23 +200,25 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 
 ### Important Fields in package.json
 
-| Key               | Description                                      |
-|------------------|--------------------------------------------------|
-| `"name"`         | Project name                                     |
-| `"version"`      | Project version                                  |
-| `"description"`  | Short project description                        |
-| `"main"`         | Entry point of the app (default: `index.js`)     |
-| `"scripts"`      | Custom commands to run the project               |
-| `"dependencies"` | Required libraries (React, Express, etc.)        |
+| Key                 | Description                                            |
+| ------------------- | ------------------------------------------------------ |
+| `"name"`            | Project name                                           |
+| `"version"`         | Project version                                        |
+| `"description"`     | Short project description                              |
+| `"main"`            | Entry point of the app (default: `index.js`)           |
+| `"scripts"`         | Custom commands to run the project                     |
+| `"dependencies"`    | Required libraries (React, Express, etc.)              |
 | `"devDependencies"` | Development-only dependencies (testing, linting, etc.) |
 
---- 
+---
 
-## 13. What is the role of the package-lock.json file ?
-- The **package-lock.json** file is automatically generated when you run npm install. 
+## 14. What is the role of the package-lock.json file ?
+
+- The **package-lock.json** file is automatically generated when you run npm install.
 - It locks the exact versions of installed dependencies to ensure consistency across different environments.
 
 ### Role of package-lock.json
+
 - Locks Dependency Versions – Ensures that the same package versions are installed for every developer in the team.
 - Improves Install Speed – Speeds up npm install by caching resolved package versions.
 - Ensures Reproducibility – Guarantees that the project will work the same way across all environments (development, testing, production).
@@ -206,38 +237,40 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 }
 
 ```
+
 - **version –** The exact version installed (18.2.0)
 - **resolved –** The URL where the package was downloaded from
 - **integrity –** Security hash to verify package integrity
 
 ### Difference Between package.json and package-lock.json
 
-| Feature                 | `package.json`                          | `package-lock.json`                     |
-|-------------------------|----------------------------------------|-----------------------------------------|
-| **Purpose**            | Lists dependencies & versions          | Locks exact dependency tree           |
-| **Contains Version Ranges?** | Yes (`^`, `~`)                     | No (Exact versions)                   |
-| **Editable by Developer?** | Yes                                  | No (Auto-generated)                   |
-| **Tracks Subdependencies?** | No                                  | Yes                                   |
-
+| Feature                      | `package.json`                | `package-lock.json`         |
+| ---------------------------- | ----------------------------- | --------------------------- |
+| **Purpose**                  | Lists dependencies & versions | Locks exact dependency tree |
+| **Contains Version Ranges?** | Yes (`^`, `~`)                | No (Exact versions)         |
+| **Editable by Developer?**   | Yes                           | No (Auto-generated)         |
+| **Tracks Subdependencies?**  | No                            | Yes                         |
 
 ---
 
-## 14. Types of Dependencies in package.json ?
+## 15. Types of Dependencies in package.json ?
 
 #### When installing packages using NPM , dependencies are categorized into two main types:
-- dependencies 
-    - These are the core libraries required for the application to run in production.
-    - We install production dependencies with
-    ```
-    npm install <package>
-    ``` 
+
+- dependencies
+  - These are the core libraries required for the application to run in production.
+  - We install production dependencies with
+  ```
+  npm install <package>
+  ```
 - devDependencies
-    - These packages are required only during development (not needed in production).
-    - We install development dependencies with
-    ```
-    npm install <package> --save-dev
-    ```
-```    
+  - These packages are required only during development (not needed in production).
+  - We install development dependencies with
+  ```
+  npm install <package> --save-dev
+  ```
+
+```
 "dependencies": {
   "react": "^18.0.0",
   "express": "^4.17.1"
@@ -248,18 +281,21 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 }
 
 ```
+
 ---
 
-## 15. What are Transitive Dependencies ?
+## 16. What are Transitive Dependencies ?
+
 - A Transitive Dependency is a dependency that your project does not directly install, but it gets installed automatically because another package (that you installed) depends on it.
 - **In Simple Terms:**
-    - You install Package A → Package A requires Package B → Package B is a transitive dependency
+  - You install Package A → Package A requires Package B → Package B is a transitive dependency
 
 ---
 
-## 16. difference between Caret (^) and Tilde (~) in package.json ?
+## 17. difference between Caret (^) and Tilde (~) in package.json ?
 
 #### Example: 2.3.4
+
 - Major (2.x.x) → Breaking changes
 - Minor (x.3.x) → New features, no breaking changes
 - Patch (x.x.4) → Bug fixes, no breaking changes
@@ -272,6 +308,7 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 }
 
 ```
+
 - This means React version 18.2.0 or any newer minor/patch version (18.x.x) will be installed
 - It allows updates as long as the major version (18.x.x) remains the same
 - Example versions that can be installed: 18.2.1, 18.3.0, 18.4.5
@@ -286,6 +323,7 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 }
 
 ```
+
 - This means React version 18.2.0 or any newer patch version (18.2.x) will be installed
 - It allows only patch updates, but not minor updates
 - Example versions that can be installed: 18.2.1, 18.2.2
@@ -293,273 +331,275 @@ The crossorigin attribute is used in HTML <script> and <link> tags to handle cro
 - Use **~** when you want only bug fixes but no new features **(Strict, for stability (like testing tools))**
 
 ### No Symbol ^ or ~
+
 ```
 "dependencies": {
   "react": "18.2.0"
 }
 ```
+
 - Only React version 18.2.0 will be installed
 - No updates will be installed automatically (even if 18.2.1 or 18.3.0 is available)
 - Use **No Symbol** when you want When you want a fixed version
 
 ---
 
-## 17. What is a bundler ?
-- A bundler is a tool that takes your project's JavaScript, CSS, images, and other assets, combines them into optimized files, and makes them ready for the browser. 
+## 18. What is a bundler ?
+
+- A bundler is a tool that takes your project's JavaScript, CSS, images, and other assets, combines them into optimized files, and makes them ready for the browser.
 - It improves performance by reducing the number of requests and optimizing code.
 
 ### Why Do We Need a Bundler?
+
 - **Optimizes Performance –** Combines multiple files into a single file (reduces HTTP requests).
 - **Manages Dependencies –** Resolves import and require statements.
 - **Removes Unused Code (Tree Shaking) –** Eliminates unnecessary code.
 - **Minifies Code –** Compresses files for faster loading.
 - **Supports Modern JavaScript Features –** Transpiles ES6+ code for browser compatibility.
 
-#### Popular Bundlers in JavaScript
+### Popular Bundlers in JavaScript
+
 - Webpack
 - Vite
 - Parcel
 - Rollup
 - ESBuild
 
+---
 
+## 19. What is HMR (Hot Module Replacement)?
 
-# `Learn React With Harshi 👩🏻‍💻 Series`
+**HMR (Hot Module Replacement)** is a feature in modern JavaScript bundlers (like Webpack, Vite, and Parcel) that allows you to update modules in a running application without a full page reload.
 
-Documenting my learning journey of [Namaste React Live Course](https://learn.namastedev.com/) conducted by Akshay Saini
+### Why is HMR Important?
 
-## Namaste React Project Setup Cheatsheet
+- **Faster Development –** No need to refresh the page manually.
+- **Retains State –** Doesn't reset UI state (useful in React).
+- **Efficient Debugging –** Instantly sees changes without reloading.
+- **Live Updates –** CSS, JS, and even React components update instantly.
 
-Following are the steps that we followed (in namaste react course) while developing a React App. You don't have to jump to multiple websites to copy setup command. Simply, you can refer to this cheatsheet for commands & configuration steps and easily create any new React Application.
+### How HMR Works?
 
-### Important Note
+- **Listens for Changes –** Watches files in the project.
+- **Recompiles Changed Modules –** Instead of rebuilding everything, it updates only the changed parts.
+- **Injects Updates into the Running Application –** No full reload, just a partial update.
 
-You can follow these steps when you want to learn React in depth and want to know what happens behind the scene of create-react-app. But when you are in time constraint to develop a react app in situations like machine coding round of interview, it's advisable to use create-react-app package which does most of the below steps in less time. If you want to know how to setup the react application with create-react-app, check out [Setting Up React Application using CRA](https://github.com/Learn-React-With-Harshi/chapter-14-machine-coding-interview/blob/main/setup.md)
+---
 
-Let's set up the project in quick time by following the steps below & spend all the time that we have for developing the features.
+## 20. How to Make a React App Compatible with Older Browsers?
 
-### Tech Stack:
+### 1. Use Babel for Transpilation
 
-- UI Framwork : React
-- CSS Framework : Tailwind CSS
-- Routing : React Router DOM
-- State Management : React-Redux & Redux Toolkit
-- Web Bundler : Parcel
-- Testing Frameowrk : React Testing Library & Jest
+- **Why? :** Older browsers may not support ES6+ syntax like let, const, arrow functions, and async/await.
+- **Solution :** Babel converts modern JavaScript into ES5, which is supported by most browsers.
 
-### Table of contents:
+### 2. Use Polyfills for Missing Features
 
-- [GitHub Repository](#github-repository)
-- [Basic Files](#basic-files)
-- [NPM - Initialize and Install Packages](#npm-initialize-and-install-packages)
-  - [Init](#init)
-  - [Install Parcel](#install-parcel)
-  - [Install React](#install-react)
-  - [Install React DOM](#install-react-dom)
-  - [Install React Router DOM](#install-react-router-dom)
-- [.gitignore](#gitignore)
-- [.babelrc](#babelrc)
-- [config.js](#config.js)
-- [Command Scripts](#command-scripts)
-- [Tailwind CSS](#tailwind-css)
-- [Redux](#redux)
-- [Jest and React Testing Library](#jest-and-react-testing-library)
+- **Why? :** Older browsers lack modern JavaScript APIs like fetch, Promise, and Object.assign.
+- **Solution :** Use polyfills (extra JavaScript code that mimics missing features).
 
-### GitHub Repository:
+### 3. Use CSS Prefixes for Older Browsers
 
-1. Create a new public Github Repository in `https://github.com/`
-2. Click on `code` dropdown and copy the link to your repo.
-3. Clone the repo into local machine.
+- **Why? :** Some CSS properties (like grid, flexbox) need prefixes in old browsers.
+- **Solution :** Use Autoprefixer to add vendor prefixes automatically.
 
-```
-git clone "https://github.com/Learn-React-With-Harshi/Namaste-React.git"
-```
+### 4. Use a Browserlist Configuration
 
-4. Go to the project directory
+- **Why? :** Ensures Babel & Autoprefixer only target necessary browsers.
+- **Solution :** Add browserslist in package.json:
 
-```
-cd Namaste-React
-```
+### 5. Test in Older Browsers
 
-### Basic Files:
+- Use BrowserStack, Sauce Labs, or local VM to test in IE11, Edge Legacy, and old Chrome versions.
 
-1. Open Namaste-React folder in vs code and create basic files like `index.html`, `app.js` and `index.css`
-2. Write basic code, add link and script (important: type="module" for app.js) in html file.
+---
 
-### NPM - Initialize and Install Packages:
+## 30. What is JSX?
 
-#### Init:
+**JSX (JavaScript XML)** is a syntax extension for JavaScript that allows you to write HTML-like code inside JavaScript.
+
+### Why Do We Use JSX?
+
+- **Makes Code More Readable –** Looks like HTML but has JavaScript power.
+- **Faster Performance –** Transpiled into optimized JavaScript (React.createElement).
+- **Prevents XSS Attacks –** Automatically escapes malicious scripts.
+- **JavaScript Inside HTML –** You can use expressions inside JSX ({} syntax).
+
+### How JSX Works Internally? JSX is not valid JavaScript! It gets converted to React.createElement()
+
+#### JSX Code:
 
 ```
-npm init
+const element = <h1>Hello, World!</h1>;
 ```
 
-#### Install Parcel:
+#### Babel Converts it to JavaScript:
 
 ```
-npm install -D parcel
+const element = React.createElement("h1", null, "Hello, World!");
 ```
 
-#### Install React:
-
-```
-npm install react
-```
-
-#### Install React DOM:
-
-```
-npm install react-dom
-```
-
-#### Install React Router DOM:
-
-```
-npm install react-router-dom
-```
-
-### .gitignore:
-
-Create .gitignore file in the project directory and add the following
-
-```
-#Node modules
-node_modules
-
-#Parcel
-.parcel-cache
-/dist
-
-.DS_Store
-```
-
-### .babelrc:
-
-Create .gitignore file in the project directory and add the following
+#### Which Finally Becomes:
 
 ```
 {
-  "plugins": [ [
-    "transform-remove-console",
-    { "exclude": [ "error", "warn" , "log"] }
-    ]
-  ]
+  type: "h1",
+  props: { children: "Hello, World!" }
 }
 ```
 
-### config.js:
+- React then renders this virtual structure into the real DOM.
 
-Create .gitignore file in the project directory and add the required config
+---
 
-### Command Scripts:
+## 31. What is Babel?
 
-Modify the scripts in `package.json`
+- Babel is a JavaScript compiler that converts modern JavaScript (ES6+) into older versions (ES5) so that it can run on older browsers.
 
-```json
-  "scripts": {
-    "test": "jest",
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
-  }
-```
+### Why Do We Need Babel?
 
-### Tailwind CSS:
+- **Browser Compatibility –** Converts ES6+ to ES5 for older browsers like IE11.
+- **Supports JSX –** Converts JSX into JavaScript (React.createElement).
+- **Allows Latest JS Features –** Enables features like async/await, optional chaining (?.), and nullish coalescing (??).
+- **Works with Webpack & Bundlers –** Optimizes and compiles JS for production.
 
-1. Install tailwindcss via npm, and `tailwind.config.js` file will be created on executing init command.
+### How Babel Works? Babel takes modern JavaScript and transpiles it into older JavaScript.
 
-```
-npm install -D tailwindcss
-npx tailwindcss init
-```
-
-2. Configure template paths
-
-Add the paths to all of your template files in your tailwind.config.js file.
+#### Modern JavaScript (ES6+):
 
 ```
-module.exports = {
-  content: ["./src/**/*.{html,js}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+const greet = () => console.log("Hello, World!");
 ```
 
-3. Add the Tailwind directives to your CSS
-
-Add the @tailwind directives for each of Tailwind’s layers to your main CSS file.
+#### Babel Transpiles to ES5:
 
 ```
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+var greet = function () {
+  console.log("Hello, World!");
+};
 ```
 
-4. Create `.postcssrc` file in project directory and add the following
+- This makes it compatible with older browsers that don’t support ES6.
 
-{
-"plugins": {
-"tailwindcss": {}
-}
-}
+---
 
-### Redux:
+## 32. Difference Between { Title } vs { \<Title \/\> } vs { \<Title\>\<\/Title\> }
 
-1. Install Redux Toolkit & React-Redux
+| Syntax                       | Meaning                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------ |
+| **{ Title }**                | This value describes the Title as a JavaScript expression or a variable.                   |
+| **{ \<Title \/\> }**         | This value represents a component that is basically returning some JSX value.(Recommended) |
+| **{ \<Title\>\<\/Title\> }** | <Title> and <Title></Title> are equivalent only when \<Title\> has no child components.    |
+
+---
+
+## 33. What is Reconciliation in React?
+
+- Reconciliation is the process in React that updates the Real DOM efficiently by comparing it with the Virtual DOM and applying only the necessary changes.
+- This helps improve performance and avoid unnecessary re-renders.
+
+### How Does Reconciliation Work?
+
+**Render Phase:**
+
+- React creates a Virtual DOM tree based on the component’s JSX.
+- It compares the new Virtual DOM with the previous one (Diffing).
+
+**Commit Phase:**
+
+- React calculates the minimal number of changes (using the Fiber algorithm).
+- It applies only the necessary updates to the Real DOM.
+
+### The Diffing Algorithm in Reconciliation
+
+- React uses a Diffing Algorithm to efficiently update the DOM.
+
+**Rules of Diffing Algorithm:**
+
+- If the element type is the same, React updates only its attributes.
+- If the element type changes, React destroys the old element and creates a new one.
+- If the list items change, React uses keys to identify and update them efficiently.
+
+---
+
+## 34. What is React Fiber?
+
+- React Fiber is the re-implementation of React’s core algorithm introduced in React 16.
+- It improves rendering performance by enabling asynchronous rendering, better handling of animations, and prioritization of updates.
+
+### Why Was React Fiber Introduced?
+
+- Before React Fiber, React used a recursive rendering approach that was synchronous and blocked the main thread until rendering was complete. This caused:
+- Slow UI updates in large applications.
+- Animations & transitions lagging due to blocking renders.
+- Performance issues when handling complex components.
+
+### How Does React Fiber Work?
+
+- React Fiber splits the rendering process into small units called fibers, allowing React to pause, prioritize, and resume rendering when needed.
+
+#### Before Fiber (Old React Reconciliation)
+
+- React would render the entire component tree in one go, blocking the UI.
+- If an update took too long, the page could freeze.
+
+#### With Fiber (New Reconciliation Algorithm)
+
+- Rendering is broken into smaller chunks.
+- React can pause rendering if needed (e.g., for high-priority updates like user input).
+- Improves handling of animations, transitions, and responsiveness.
+
+---
+
+## 35. Why and When Do We Need Keys in React?
+
+- Keys in React help identify which elements in a list have changed, been added, or removed. They improve performance and prevent unnecessary re-renders by ensuring React can efficiently update the UI.
+- **In Simple Terms:**
+  - Keys help React track which items changed, added, or removed, improving performance.
+
+**Why Are Keys Important?**
+
+- React needs a way to track changes when rendering lists.
+- Without keys, React re-renders everything, even if only one item changes.
+- Keys help React identify elements uniquely and optimize updates.
+
+**When Do We Need Keys?**
+
+- We must use keys when rendering lists dynamically using .map(), such as:
 
 ```
-npm install @reduxjs/toolkit
-npm install react-redux
+{users.map((user) => (
+  <li key={user.id}>{user.name}</li>  // ✅ Using unique "id" as key
+))}
 ```
 
-### Jest and React Testing Library:
+**Can We Use Indexes as Keys in React?**
 
-1. Install React & Jest DOM from React Testing library
+- Yes, we can use indexes as keys in React.
+- but it is not recommended in most cases because it can lead to unexpected bugs and performance issues when list items are added, removed, or reordered.
 
-```
-npm install --save-dev @testing-library/react @testing-library/jest-dom
-```
 
-2. Install Jest & JS-DOM Environment
+## 36. What is React?
+- React is an open-source JavaScript library developed by Facebook (Meta) for building fast, interactive, and reusable UI components. - - It follows a component-based architecture and uses a Virtual DOM for efficient updates.
 
-```
-npm install -D jest jest-environment-jsdom
-```
+### Key Features of React
+- **Component-Based Architecture**
+  - Everything in React is a component (e.g., buttons, forms, headers).
+- **Virtual DOM (VDOM)**
+  - React doesn’t update the Real DOM directly (which is slow).
+- **JSX**
+  - JSX is a syntax extension that allows writing HTML-like code inside JavaScript.
+- **State Management**
+  - React uses state to manage component-specific data dynamically.
+- **Props (Properties)**
+  - Props allow passing data between components.
+- **React Hooks**
+  - Hooks (introduced in React 16.8) allow functional components to use state and lifecycle methods.
+- **React Router (For Navigation)**
+  - React doesn’t have built-in routing, so React Router is used to navigate between pages in a Single Page Application (SPA).
+- **One-Way Data Binding**
+  - React follows one-way data binding, meaning data flows from parent to child components.
+- **Fast Performance with React Fiber**
+  - React Fiber (React 16+) improves rendering with asynchronous updates, time-slicing, and prioritization of tasks.
 
-3. Configure Jest & this creates `jest.config.js`
-
-```
-npx jest --init
-```
-
-- Typescript -> N
-- environment -> jsdom (broswer-like)
-- code coverage -> y
-- provider for coverage -> babel
-- automatically clear before test -> y
-
-4. Include following scripts to package.json
-
-```
-"test" : "jest",
-"watch-test" : "test --watch"
-```
-
-5. Create new folder `__tests__` under `src/components`
-6. Install Babel
-
-```
-npm install --save-dev babel-jest @babel/core @babel/preset-env @babel/preset-react
-```
-
-7. Add the following to Configure babel -> .babelrc file
-
-```
-
-  "presets" : [["@babel/preset-env", {"targets": {"node": "current"}}],
-              ["@babel/preset-react", {"runtime" : "automatic"}]]
-}
-```
-
-9. Add /coverage in .gitignore file
+---
