@@ -811,7 +811,8 @@ const updateAge = () => {
 
 ### What Are React Hooks?
 
-- React Hooks are functions that allow functional components to use state and lifecycle features without writing class components. - - - Hooks were introduced in React 16.8 to simplify component logic and improve reusability.
+- React Hooks are functions that allow functional components to use state and lifecycle features without writing class components.
+- Hooks were introduced in React 16.8 to simplify component logic and improve reusability.
 
 ### Key Features of Hooks:
 
@@ -896,19 +897,35 @@ function Counter() {
 
 ---
 
-## 40. Fetching data from an API
+## 40. What is a Custom Hook in React?
 
-- There are two approaches.
-  - First Approach
-    - Page Loads -> Make API call -> Render UI
-    - In this approach, as soon as the page loads, we will make an API call.
-    - As soon as we get the API response, we will populate the data and render the UI.
-  - Second Approach
-    - Page Loads -> Render UI -> Make API call -> Render
-    - In this approach, as soon as the page loads, we will render the skeleton of the UI.
-    - Then we will make an API call.
-    - Once we get the API response, then we will populate the data and render the UI.
-    - In React, we are always going to follow the second approach.
+- A Custom Hook in React is a JavaScript function that uses built-in React Hooks (like useState, useEffect, etc.) to encapsulate reusable logic.
+- It allows you to reuse stateful logic across multiple components without repeating code.
+- Custom Hooks follow the naming convention of starting with "use", like useFetch or useAuth.
+
+### Why Use Custom Hooks?
+
+- **Code Reusability –** Avoids repeating logic across multiple components.
+- **Separation of Concerns –** Keeps components clean by moving logic to hooks.
+- **Improves Readability & Maintainability –** Breaks down complex logic into modular functions.
+- **Easier Testing –** Hooks can be tested independently.
+
+---
+
+## 41. Fetching data from an API
+
+**There are two approaches.**
+
+- First Approach
+  - Page Loads -> Make API call -> Render UI
+  - In this approach, as soon as the page loads, we will make an API call.
+  - As soon as we get the API response, we will populate the data and render the UI.
+- Second Approach
+  - Page Loads -> Render UI -> Make API call -> Render
+  - In this approach, as soon as the page loads, we will render the skeleton of the UI.
+  - Then we will make an API call.
+  - Once we get the API response, then we will populate the data and render the UI.
+  - In React, we are always going to follow the second approach.
 
 ### Fetching Data with useEffect and useState (Best Practices)
 
@@ -919,7 +936,7 @@ function Counter() {
 
 ---
 
-## 41. How Can We Change a State Variable Even If It Is Defined as a Constant?
+## 42. How Can We Change a State Variable Even If It Is Defined as a Constant?
 
 - In React, when we declare a state variable using useState, we define it as a constant using const.
 - However, React provides a special function (setState) to update the state, even though it is declared as a constant.
@@ -943,7 +960,7 @@ const [count, setCount] = useState(0);
 
 ---
 
-## 42. Key Differences Between Expression and Statement
+## 43. Key Differences Between Expression and Statement
 
 | Feature         | Expression                    | Statement               |
 | --------------- | ----------------------------- | ----------------------- |
@@ -954,7 +971,7 @@ const [count, setCount] = useState(0);
 
 ---
 
-## 43. What is React Router?
+## 44. What is React Router?
 
 - React Router is a popular routing library for React applications that enables client-side navigation without refreshing the page.
 - It allows us to create single-page applications (SPAs) with multiple views.
@@ -1004,7 +1021,7 @@ React Router provides different types of routers for handling navigation based o
   - React Native apps.
   - Unit testing with tools like Jest.
 
-4. MemoryRouter
+4. StaticRouter
 
 - Used for:
   - Server-Side Rendering (SSR) applications like Next.js.
@@ -1021,11 +1038,11 @@ React Router provides different types of routers for handling navigation based o
 - Client side routing
   - In client side routing, the app does not make any network calls while navigating from one page to another.
 - Server side routing
-  - In client side routing, the app does not make any network calls while navigating from one page to another.
+  - In the server side routing, when a user navigates to a path, the browser will reload, make a network call, get the page from the server, and then show it on the UI.
 
 ---
 
-## 44. What is createBrowserRouter?
+## 45. What is createBrowserRouter?
 
 - It is an alternative to \<BrowserRouter\> that uses a JavaScript object-based route configuration instead of JSX-based \<Routes\> and \<Route\>.
 - It enables nested routing, layout components, data loading, and error handling at the route level.
@@ -1042,9 +1059,10 @@ React Router provides different types of routers for handling navigation based o
 | **Advanced Features** | Simple routing                                        | Nested routes, loaders, error handling |
 | **Example**           | `<BrowserRouter><Routes>...</Routes></BrowserRouter>` | `createBrowserRouter([...routes])`     |
 
-## 45. What should happen if we do console.log(useState()) ?
+## 46. What should happen if we do console.log(useState()) ?
 
 1. **Incorrect Usage:**
+
 ```
 import { useState } from "react";
 
@@ -1053,6 +1071,7 @@ console.log(useState()); //Error: Invalid hook call. Hooks can only be called in
 ```
 
 2.  **Correct Usage Inside a Functional Component:**
+
 ```
 import { useState } from "react";
 
@@ -1069,5 +1088,121 @@ export default Counter;
 
 ---
 
-## 46. 
+## 47. What is Lazy Loading in React?
+
+- **Lazy Loading** is a performance optimization technique where components or resources (like images, scripts, or data) are loaded only when needed, instead of at the initial page load.
+
+- In React, lazy loading helps reduce the initial bundle size by splitting the code and loading components on demand using React.lazy() and Suspense.
+
+### Why Use Lazy Loading?
+
+- **Faster Initial Load:** Loads only essential components first.
+- **Optimized Performance:** Reduces bundle size and improves app speed.
+- **Efficient Memory Usage:** Loads components only when they are required.
+
+### How to Implement Lazy Loading in React?
+
+1. Lazy Loading Components with React.lazy()
+
+```
+import React, { Suspense, lazy } from "react";
+
+// Lazy load the component
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
+
+function App() {
+  return (
+    <div>
+      <h1>React Lazy Loading</h1>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <HeavyComponent />
+      </Suspense>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+**How It Works:**
+
+- React.lazy(() => import("./HeavyComponent")) dynamically loads the component.
+- \<Suspense\> wraps the lazy-loaded component and provides a fallback UI (like "Loading...") until it loads.
+
+2. Lazy Loading Routes using React
+
+```
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
+
+const Home = lazy(() => import("./Home"));
+const About = lazy(() => import("./About"));
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+```
+
+**How It Works:**
+
+- Components for different routes (Home, About) are loaded only when needed, reducing the initial load time.
+
+3. Lazy Loading Images (Native Approach)
+
+```
+<img src="image.jpg" loading="lazy" alt="Lazy Loaded Image" />
+
+```
+
+**How It Works:**
+
+- The image loads only when it comes into view, reducing initial page load time.
+
+
+## 48. What is a Higher-Order Component (HOC) in React?
+- A Higher-Order Component (HOC) is a function that takes a component and returns a component.
+- It is used to reuse component logic without modifying the original component.
+
+### Why Use HOCs?
+- **Code Reusability –** Avoids duplicating logic in multiple components.
+- **Separation of Concerns –** Keeps components clean by handling concerns like authentication, logging, etc., separately.
+- **Enhancing Components –** Can add new props, logic, or behavior to components dynamically.
+- **Can be Used for Authorization, Logging, Performance Optimization, etc.**
+
+### When to Use HOCs?
+- Handling Authentication & Authorization
+- Adding Logging & Performance Monitoring
+- Enhancing Components with Extra Props or Features
+- Applying Common UI Behaviors (e.g., Loading, Theming, Error Handling)
+
+## 49.  What is Controlled vs. Uncontrolled Components?
+
+## 50. What is "Lifting the State Up" in React?
+
+## 51. What is Props Drilling? What is prop drilling, and how can you avoid it?
+
+## 52. What is React Context?
+
+## 53. Explain the purpose of useState, useEffect, and useContext.
+
+## 54. Explain the purpose of useMemo , useCallback and useRef.
+
+## 55. Explain the difference between useState, useEffect, useContext, useMemo , useCallback and useRef.
+
+## 56. What is Redux, and how does it work with React?
+
+## 57. What is context API, and how is it used for state management?
 
