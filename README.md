@@ -578,11 +578,12 @@ var greet = function () {
 - Yes, we can use indexes as keys in React.
 - but it is not recommended in most cases because it can lead to unexpected bugs and performance issues when list items are added, removed, or reordered.
 
-
 ## 36. What is React?
+
 - React is an open-source JavaScript library developed by Facebook (Meta) for building fast, interactive, and reusable UI components. - - It follows a component-based architecture and uses a Virtual DOM for efficient updates.
 
 ### Key Features of React
+
 - **Component-Based Architecture**
   - Everything in React is a component (e.g., buttons, forms, headers).
 - **Virtual DOM (VDOM)**
@@ -603,3 +604,470 @@ var greet = function () {
   - React Fiber (React 16+) improves rendering with asynchronous updates, time-slicing, and prioritization of tasks.
 
 ---
+
+## 37. What are Props in React, and How Are They Used?
+
+### What Are Props?
+
+- **Props (short for "Properties")** in React are used to pass data from a parent component to a child component. They make components reusable and allow them to be configured dynamically.
+
+### Key Characteristics of Props:
+
+- **Immutable -** Cannot be changed inside the child component.
+- **One-way data flow -** Data flows from parent to child only.
+- **Reusable -** Props allow components to work with different data values.
+
+### How Are Props Used?
+
+**1. Passing Props from Parent to Child**
+
+```
+    function Greeting(props) {
+      return <h1>Hello, {props.name}!</h1>;
+    }
+
+    function App() {
+      return <Greeting name="John" />;
+    }
+```
+
+**2. Using Destructuring for Props**
+
+```
+    function Greeting({ name }) {
+  return <h1>Hello, {name}!</h1>;
+}
+
+function App() {
+  return <Greeting name="Alice" />;
+}
+```
+
+- Destructuring makes the code more readable.
+
+**3. Passing Multiple Props**
+
+```
+function User({ name, age, hobbies }) {
+  return (
+    <div>
+      <h2>Name: {name}</h2>
+      <p>Age: {age}</p>
+      <p>Hobbies: {hobbies.join(", ")}</p>
+    </div>
+  );
+}
+
+function App() {
+  return <User name="John" age={25} hobbies={["Reading", "Gaming"]} />;
+}
+
+```
+
+**4. Passing Functions as Props (Callback Functions)**
+
+```
+function Button({ onClick }) {
+  return <button onClick={onClick}>Click Me</button>;
+}
+
+function App() {
+  const handleClick = () => alert("Button Clicked!");
+
+  return <Button onClick={handleClick} />;
+}
+
+
+```
+
+- The handleClick function is passed as a prop and executed inside the child component.
+
+**5. Default Props (Setting Default Values)**
+
+```
+function Greeting({ name = "Guest" }) {
+  return <h1>Hello, {name}!</h1>;
+}
+
+function App() {
+  return <Greeting />; // No name passed, so "Guest" is used
+}
+
+
+```
+
+- If name is missing, "Guest" is displayed instead of undefined.
+
+**6. PropTypes (Type Checking for Props)**
+
+```
+import PropTypes from "prop-types";
+
+function User({ name, age }) {
+  return (
+    <div>
+      <h2>Name: {name}</h2>
+      <p>Age: {age}</p>
+    </div>
+  );
+}
+
+User.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number.isRequired,
+};
+
+
+```
+
+- This ensures name is a string and age is a number.
+- If the wrong type is passed, React will show a warning in the console.
+
+---
+
+## 38. What is State in React, and How Is It Different from Props?
+
+### What is State in React?
+
+- State is a built-in feature in React that allows components to store and manage dynamic data.
+- It controls the component’s behavior and re-renders the UI whenever it changes.
+
+### Key Features of State:
+
+- **Mutable -** State can be updated inside the component.
+- **Private -** State belongs to the component and cannot be accessed by other components directly.
+- **Triggers Re-renders -** When state changes, React automatically re-renders the component.
+
+### How is State Used?
+
+**1. Declaring State Using useState()**
+
+```
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0); // State variable
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+export default Counter;
+
+
+
+```
+
+- Here, count is a state variable, and setCount is a function to update state.
+- Clicking the button updates the state (count), causing a re-render.
+
+**2. Updating State Based on Previous State**
+
+```
+const [count, setCount] = useState(0);
+
+const increment = () => {
+  setCount(prevCount => prevCount + 1);
+};
+
+
+
+```
+
+- This ensures that React uses the latest state value.
+
+**6. State Can Hold Objects & Arrays**
+
+```
+const [user, setUser] = useState({ name: "John", age: 25 });
+
+const updateAge = () => {
+  setUser(prevUser => ({ ...prevUser, age: prevUser.age + 1 }));
+};
+
+
+
+```
+
+- The spread operator (...prevUser) ensures that other properties remain unchanged.
+
+### Difference Between Props and State
+
+| Feature          | Props                         | State                            |
+| ---------------- | ----------------------------- | -------------------------------- |
+| **Mutability**   | Immutable (cannot be changed) | Mutable (can be updated)         |
+| **Ownership**    | Passed from parent to child   | Managed within the component     |
+| **Re-rendering** | Does not cause re-renders     | Triggers re-renders              |
+| **Usage**        | Used for data transfer        | Used for component behavior      |
+| **Access**       | Read-only                     | Can be modified using `setState` |
+
+---
+
+## 39. What Are React Hooks, and Why Were They Introduced?
+
+### What Are React Hooks?
+
+- React Hooks are functions that allow functional components to use state and lifecycle features without writing class components. - - - Hooks were introduced in React 16.8 to simplify component logic and improve reusability.
+
+### Key Features of Hooks:
+
+- Allow state management in functional components (useState)
+- Enable side effects like API calls (useEffect)
+- Provide performance optimizations (useMemo, useCallback)
+- Facilitate global state management (useContext, useReducer)
+
+### Why Were Hooks Introduced?
+
+Before hooks, state and lifecycle methods were only available in class components. This led to several problems:
+
+**1. Complex Component Logic**
+
+- In class components, logic was often split across multiple lifecycle methods (componentDidMount, componentDidUpdate, componentWillUnmount).
+- Hooks allow us to group related logic together inside functions.
+
+**2. No State in Functional Components**
+
+- Before hooks, only class components could manage state.
+- useState made state available inside functional components, reducing boilerplate code.
+
+**3. Code Reusability Issues**
+
+- React HOCs (Higher-Order Components) and Render Props were used to share logic, but they made the code hard to read.
+- Hooks like useContext, useReducer, and custom hooks allow better code reusability.
+
+### Before Hooks: Using Class Components
+
+```
+class Counter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  increment = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    return (
+      <div>
+        <p>Count: {this.state.count}</p>
+        <button onClick={this.increment}>Increment</button>
+      </div>
+    );
+  }
+}
+
+```
+
+#### Problems:
+
+- Boilerplate code (constructor, this.state, this.setState)
+- Complex syntax (this binding)
+
+### After Hooks: Using Functional Components
+
+```
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+
+```
+
+#### Advantages of Hooks:
+
+- Less code, easier to read
+- No need for classes or this keyword
+- Simplifies state management
+
+---
+
+## 40. Fetching data from an API
+
+- There are two approaches.
+  - First Approach
+    - Page Loads -> Make API call -> Render UI
+    - In this approach, as soon as the page loads, we will make an API call.
+    - As soon as we get the API response, we will populate the data and render the UI.
+  - Second Approach
+    - Page Loads -> Render UI -> Make API call -> Render
+    - In this approach, as soon as the page loads, we will render the skeleton of the UI.
+    - Then we will make an API call.
+    - Once we get the API response, then we will populate the data and render the UI.
+    - In React, we are always going to follow the second approach.
+
+### Fetching Data with useEffect and useState (Best Practices)
+
+- Always handle errors (try/catch or .catch()).
+- Use useEffect with an empty dependency array ([]) to fetch data only once on mount.
+- Use a loading state to avoid showing blank UI while fetching.
+- Use a key prop when rendering lists from API data (\<li key={user.id}\>).
+
+---
+
+## 41. How Can We Change a State Variable Even If It Is Defined as a Constant?
+
+- In React, when we declare a state variable using useState, we define it as a constant using const.
+- However, React provides a special function (setState) to update the state, even though it is declared as a constant.
+
+### Example: Behind the Scenes
+
+**Let's assume the component renders for the first time:**
+
+```
+const [count, setCount] = useState(0);
+```
+
+- count is initialized as 0.
+
+**When setCount(1) is called:**
+
+- React creates a new state value (1).
+- React re-renders the component, and now count = 1.
+
+#### Thus, React does not modify the existing constant but assigns a new value when the component re-renders.
+
+---
+
+## 42. Key Differences Between Expression and Statement
+
+| Feature         | Expression                    | Statement               |
+| --------------- | ----------------------------- | ----------------------- |
+| **Definition**  | Returns a value               | Performs an action      |
+| **Usage**       | Can be assigned to a variable | Cannot be assigned      |
+| **Inside JSX?** | ✅ Yes                        | ❌ No                   |
+| **Examples**    | `5 + 5`, `"Hello"`, `x > y`   | `if`, `for`, `function` |
+
+---
+
+## 43. What is React Router?
+
+- React Router is a popular routing library for React applications that enables client-side navigation without refreshing the page.
+- It allows us to create single-page applications (SPAs) with multiple views.
+
+### Why Use React Router?
+
+- Enables navigation between pages without reloading (Client-side Routing).
+- Improves user experience with faster transitions.
+- Supports nested routes, dynamic routes, and protected routes.
+- Handles browser history and URL updates efficiently.
+
+### Types of Router in React and Their Uses
+
+React Router provides different types of routers for handling navigation based on the application's requirements.
+
+1. BrowserRouter (Most Common)
+
+- Used for:
+  - Standard Single Page Applications (SPAs) with modern browsers.
+- How It Works:
+  - Uses the HTML5 History API (pushState, replaceState) to change the URL without reloading the page.
+  - Keeps a clean URL without a hash (/home, /about).
+  - Ideal for most React applications deployed on a web server.
+- Best For:
+  - Modern browsers.
+  - SEO-friendly SPAs.
+
+2. HashRouter
+
+- Used for:
+  - Applications that don’t have backend server support for routing (like static sites).
+- How It Works:
+  - Uses a hash (#) in the URL (http://example.com/#/about).
+  - Works well even if the server doesn't handle route requests.
+- Best For:
+  - Static websites hosted on GitHub Pages, AWS S3, or Firebase.
+  - Environments where server-side routing is unavailable.
+
+3. MemoryRouter
+
+- Used for:
+  - Applications that do not use the browser’s URL (e.g., mobile apps, unit testing).
+- How It Works:
+  - Stores the route history in memory instead of the browser URL.Stores the route history in memory instead of the browser URL.
+  - The URL does not change in the address bar.
+- Best For:
+  - React Native apps.
+  - Unit testing with tools like Jest.
+
+4. MemoryRouter
+
+- Used for:
+  - Server-Side Rendering (SSR) applications like Next.js.
+- How It Works:
+  - Prepares static routes for the server to render the initial page.
+  - Does not track navigation changes (no pushState).
+  - Mostly used in frameworks like Next.js that handle SSR.
+- Best For:
+  - Server-Side Rendering (SSR) frameworks like Next.js.
+  - Pre-rendering pages for SEO.
+
+#### Note: Two types of routing
+
+- Client side routing
+  - In client side routing, the app does not make any network calls while navigating from one page to another.
+- Server side routing
+  - In client side routing, the app does not make any network calls while navigating from one page to another.
+
+---
+
+## 44. What is createBrowserRouter?
+
+- It is an alternative to \<BrowserRouter\> that uses a JavaScript object-based route configuration instead of JSX-based \<Routes\> and \<Route\>.
+- It enables nested routing, layout components, data loading, and error handling at the route level.
+- Works well with React Suspense for better performance.
+
+### Note: createBrowserRouter is a way to define routes (introduced in React Router v6.4), but it still uses BrowserRouter internally for navigation but provides more powerful features (data fetching, layouts, etc.).
+
+## Correct Understanding: BrowserRouter vs. createBrowserRouter
+
+| Feature               | `BrowserRouter`                                       | `createBrowserRouter`                  |
+| --------------------- | ----------------------------------------------------- | -------------------------------------- |
+| **Type**              | Router (decides URL handling)                         | API to define routes                   |
+| **Uses**              | `<Routes>` & `<Route>` (JSX-based routing)            | Object-based route configuration       |
+| **Advanced Features** | Simple routing                                        | Nested routes, loaders, error handling |
+| **Example**           | `<BrowserRouter><Routes>...</Routes></BrowserRouter>` | `createBrowserRouter([...routes])`     |
+
+## 45. What should happen if we do console.log(useState()) ?
+
+1. **Incorrect Usage:**
+```
+import { useState } from "react";
+
+console.log(useState()); //Error: Invalid hook call. Hooks can only be called inside the body of a function component.
+
+```
+
+2.  **Correct Usage Inside a Functional Component:**
+```
+import { useState } from "react";
+
+function Counter() {
+  const state = useState(0);
+  console.log(state); // ✅ Logs: [0, ƒ setState]
+
+  return <button>Click</button>;
+}
+
+export default Counter;
+
+```
+
+---
+
+## 46. 
+
