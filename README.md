@@ -1171,38 +1171,333 @@ export default App;
 
 - The image loads only when it comes into view, reducing initial page load time.
 
+---
+
+**MORE PRECTICE**
 
 ## 48. What is a Higher-Order Component (HOC) in React?
+
 - A Higher-Order Component (HOC) is a function that takes a component and returns a component.
 - It is used to reuse component logic without modifying the original component.
 
+### HOCs follow the pattern:
+
+```
+const EnhancedComponent = higherOrderFunction(OriginalComponent);
+
+```
+
 ### Why Use HOCs?
+
 - **Code Reusability –** Avoids duplicating logic in multiple components.
 - **Separation of Concerns –** Keeps components clean by handling concerns like authentication, logging, etc., separately.
 - **Enhancing Components –** Can add new props, logic, or behavior to components dynamically.
 - **Can be Used for Authorization, Logging, Performance Optimization, etc.**
 
 ### When to Use HOCs?
+
 - Handling Authentication & Authorization
 - Adding Logging & Performance Monitoring
 - Enhancing Components with Extra Props or Features
 - Applying Common UI Behaviors (e.g., Loading, Theming, Error Handling)
 
-## 49.  What is Controlled vs. Uncontrolled Components?
+---
+
+## 49. What is Controlled vs. Uncontrolled Components?
+
+In React, Controlled and Uncontrolled components refer to how form elements (like input fields) are managed.
+
+1. Controlled Components
+
+- A Controlled Component is a form element whose value is controlled by React state.
+- The component handles user input through state and event handlers.
+  **Example of a Controlled Component:**
+
+```
+import React, { useState } from "react";
+
+function ControlledForm() {
+  const [name, setName] = useState("");
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={name} // Controlled by state
+        onChange={(e) => setName(e.target.value)} // Updates state
+      />
+      <p>Typed Name: {name}</p>
+    </div>
+  );
+}
+
+export default ControlledForm;
+
+```
+
+**Key Points:**
+
+- The input field’s value is controlled by useState.
+- The onChange event updates the state whenever the user types.
+- The state (name) always reflects the latest input value.
+- **Use Case:** When you need real-time validation, formatting, or when React needs full control over the input.
+
+2. Uncontrolled Components
+
+- An Uncontrolled Component is a form element that manages its own state instead of being controlled by React.
+- It uses Refs to get the input’s value.
+
+**Example of an Uncontrolled Component:**
+
+```
+import React, { useRef } from "react";
+
+function UncontrolledForm() {
+  const inputRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Entered Name: " + inputRef.current.value);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" ref={inputRef} /> {/* Uncontrolled Input */}
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default UncontrolledForm;
+
+```
+
+**Key Points:**
+
+- The input field is not controlled by React state.
+- We use useRef to get the value only when needed (e.g., on form submission).
+- The input manages its own state internally.
+- **Use Case:** When performance is a concern (avoiding re-renders) or when dealing with third-party libraries that require direct DOM manipulation.
+
+## Key Differences:
+
+| Feature           | Controlled Component                                    | Uncontrolled Component                             |
+| ----------------- | ------------------------------------------------------- | -------------------------------------------------- |
+| **Value Control** | Controlled by React state (`useState`)                  | Managed by the DOM                                 |
+| **Updates**       | `onChange` updates state                                | Uses `useRef` to access the value                  |
+| **Best For**      | Real-time validation, formatting, and controlled inputs | Performance optimization, third-party integrations |
+| **Re-renders**    | Re-renders on every state update                        | No re-renders (value is not stored in state)       |
+
+## **Note:** Uncontrolled components are easier to use within their parents because they require less configuration. But they’re less flexible when you want to coordinate them together. Controlled components are maximally flexible, but they require the parent components to fully configure them with props.
 
 ## 50. What is "Lifting the State Up" in React?
 
-## 51. What is Props Drilling? What is prop drilling, and how can you avoid it?
+Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as lifting state up
+
+**Example: Without Lifting State Up**
+
+```
+import { useState } from 'react';
+
+function Panel({ title, children }) {
+  const [isActive, setIsActive] = useState(false);
+  return (
+    <section className="panel">
+      <h3>{title}</h3>
+      {isActive ? (
+        <p>{children}</p>
+      ) : (
+        <button onClick={() => setIsActive(true)}>
+          Show
+        </button>
+      )}
+    </section>
+  );
+}
+
+export default function Accordion() {
+  return (
+    <>
+      <h2>Almaty, Kazakhstan</h2>
+      <Panel title="About">
+        With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
+      </Panel>
+      <Panel title="Etymology">
+        The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
+      </Panel>
+    </>
+  );
+}
+```
+
+**Example: With Lifting State Up**
+
+```
+
+import { useState } from 'react';
+
+export default function Accordion() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  return (
+    <>
+      <h2>Almaty, Kazakhstan</h2>
+      <Panel
+        title="About"
+        isActive={activeIndex === 0}
+        onShow={() => setActiveIndex(0)}
+      >
+        With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
+      </Panel>
+      <Panel
+        title="Etymology"
+        isActive={activeIndex === 1}
+        onShow={() => setActiveIndex(1)}
+      >
+        The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
+      </Panel>
+    </>
+  );
+}
+
+function Panel({
+  title,
+  children,
+  isActive,
+  onShow
+}) {
+  return (
+    <section className="panel">
+      <h3>{title}</h3>
+      {isActive ? (
+        <p>{children}</p>
+      ) : (
+        <button onClick={onShow}>
+          Show
+        </button>
+      )}
+    </section>
+  );
+}
+```
+
+---
+
+## 51. What is Props Drilling, and how can you avoid it?
+
+Props Drilling happens when props are passed down multiple levels of nested components
+
+**Example of Props Drilling**
+
+- In this example, we have a Grandparent component that passes data (userName) to the Child component, and the Child passes it to the Grandchild.
+
+```
+
+import React from "react";
+
+function Grandchild({ userName }) {
+  return <h3>Grandchild Component: Hello, {userName}!</h3>;
+}
+
+function Child({ userName }) {
+  return (
+    <div>
+      <h2>Child Component</h2>
+      <Grandchild userName={userName} /> {/* Passing props again */}
+    </div>
+  );
+}
+
+function Grandparent() {
+  const userName = "Manish";
+
+  return (
+    <div>
+      <h1>Grandparent Component</h1>
+      <Child userName={userName} /> {/* Passing props */}
+    </div>
+  );
+}
+
+export default Grandparent;
+
+```
+
+**How to Avoid Props Drilling?**
+
+- To avoid prop drilling, we can use React Context API or state management libraries like Redux.
+
+**Solution: Using Context API**
+
+- Instead of passing userName through props, we store it in a React Context and access it directly in the Grandchild component.
+
+```
+import React, { createContext, useContext } from "react";
+
+// 1️⃣ Creating a Context
+const UserContext = createContext();
+
+function Grandchild() {
+  const userName = useContext(UserContext); // 3️⃣ Accessing the value
+  return <h3>Grandchild Component: Hello, {userName}!</h3>;
+}
+
+function Child() {
+  return (
+    <div>
+      <h2>Child Component</h2>
+      <Grandchild /> {/* No need to pass props */}
+    </div>
+  );
+}
+
+function Grandparent() {
+  const userName = "Manish";
+
+  return (
+    // 2️⃣ Providing Context value
+    <UserContext.Provider value={userName}>
+      <div>
+        <h1>Grandparent Component</h1>
+        <Child /> {/* No need to pass props */}
+      </div>
+    </UserContext.Provider>
+  );
+}
+
+export default Grandparent;
+
+
+
+```
+
+**Benefits of Using Context API:**
+
+- No need for intermediate components to pass props
+- More maintainable and readable code
+- Scales better for large applications
+
+---
 
 ## 52. What is React Context?
 
+---
+
 ## 53. Explain the purpose of useState, useEffect, and useContext.
+
+---
 
 ## 54. Explain the purpose of useMemo , useCallback and useRef.
 
+---
+
 ## 55. Explain the difference between useState, useEffect, useContext, useMemo , useCallback and useRef.
+
+---
 
 ## 56. What is Redux, and how does it work with React?
 
+---
+
 ## 57. What is context API, and how is it used for state management?
 
+---
