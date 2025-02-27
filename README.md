@@ -1478,26 +1478,657 @@ export default Grandparent;
 
 ---
 
-## 52. What is React Context?
+## 52. What is React Context? or What is context API, and how is it used for state management?
+
+### What is React Context?
+
+- **React Context API** is a built-in feature in React that allows us to share state and data between components without having to manually pass props at every level (avoiding props drilling).
+- It is mainly used for global state management like user authentication, theme settings, language preferences, etc.
+
+### Why Use React Context?
+
+- Avoids props drilling (passing props through multiple components).
+- Provides global state management without external libraries like Redux.
+- Makes the code cleaner and easier to maintain.
+
+### How Does React Context Work?
+
+**React Context has three main parts:**
+
+1. `createContext()` → Creates a Context object.
+2. `Provider` → Wraps components and provides data to them.
+3. `useContext()` → Accesses the Context data inside components.
+
+**Example: Using React Context**
+
+- **Without Context (Props Drilling Issue)**
+
+```
+import React, { useState } from "react";
+
+function Grandchild({ userName }) {
+  return <h3>Grandchild: Hello, {userName}!</h3>;
+}
+
+function Child({ userName }) {
+  return (
+    <div>
+      <h2>Child Component</h2>
+      <Grandchild userName={userName} /> {/* Passing props again */}
+    </div>
+  );
+}
+
+function Grandparent() {
+  const [userName] = useState("Manish");
+
+  return (
+    <div>
+      <h1>Grandparent Component</h1>
+      <Child userName={userName} /> {/* Passing props */}
+    </div>
+  );
+}
+
+export default Grandparent;
+
+```
+
+- Problem: Props are manually passed down multiple levels (Grandparent → Child → Grandchild). This makes the code harder to maintain.
+
+- **With Context API (No Props Drilling)**
+
+```
+import React, { createContext, useContext, useState } from "react";
+
+// 1️⃣ Create Context
+const UserContext = createContext();
+
+function Grandchild() {
+  const userName = useContext(UserContext); // 3️⃣ Access Context
+  return <h3>Grandchild: Hello, {userName}!</h3>;
+}
+
+function Child() {
+  return (
+    <div>
+      <h2>Child Component</h2>
+      <Grandchild /> {/* No props needed */}
+    </div>
+  );
+}
+
+function Grandparent() {
+  const [userName] = useState("Manish");
+
+  return (
+    // 2️⃣ Provide Context value
+    <UserContext.Provider value={userName}>
+      <div>
+        <h1>Grandparent Component</h1>
+        <Child /> {/* No props needed */}
+      </div>
+    </UserContext.Provider>
+  );
+}
+
+export default Grandparent;
+
+```
+
+**How It Works?**
+
+- UserContext is created using createContext().
+- The Provider wraps the components and provides the userName value.
+- The useContext(UserContext) hook allows Grandchild to access userName directly (no props needed).
+
+  **When to Use React Context?**
+
+- When multiple components need access to the same state (e.g., authentication, theme, language settings).
+- When props drilling becomes a problem (passing props through multiple levels).
+- For small to medium-sized applications (for large apps, Redux or Zustand might be better).
 
 ---
 
-## 53. Explain the purpose of useState, useEffect, and useContext.
+## 53. Explain the purpose and difference between useState, useEffect, useContext, useReducer, useMemo , useCallback and useRef.
+
+### 1. `useState` – Manages Component State
+
+**Purpose:**
+
+- Used to create and update local state variables inside functional components.
+- State updates trigger re-rendering.
+  **Example:**
+
+```
+
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0); // count = state variable
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+```
+
+- Re-renders component when state updates.
+
+### 2. `useEffect` – Handles Side Effects
+
+**Purpose:**
+
+- Runs side effects (e.g., data fetching, subscriptions, DOM updates) in functional components.
+- Executes after rendering and on dependency changes.
+  **Example (Fetching Data from API):**
+
+```
+import { useState, useEffect } from "react";
+
+function DataFetcher() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.example.com/data")
+      .then((res) => res.json())
+      .then((result) => setData(result));
+
+  }, []); // Runs only on mount
+
+  return <div>{data ? data.title : "Loading..."}</div>;
+}
+
+```
+
+- Runs only once (`[]` as dependency array) → Like `componentDidMount()`
+- Runs on updates (`[count]`) → Like `componentDidUpdate()`
+
+### 3. `useContext` – Manages Global State
+
+**Purpose:**
+
+- Avoids prop drilling by sharing state across multiple components.
+- Works with React Context API.
+  **Example:**
+
+```
+import { createContext, useContext } from "react";
+
+const ThemeContext = createContext("light");
+
+function ThemeProvider({ children }) {
+  return (
+    <ThemeContext.Provider value="dark">{children}</ThemeContext.Provider>
+  );
+}
+
+function ThemedComponent() {
+  const theme = useContext(ThemeContext); // Access context value
+  return <div>Current Theme: {theme}</div>;
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <ThemedComponent />
+    </ThemeProvider>
+  );
+}
+
+```
+
+- Removes need for prop drilling
+- Useful for themes, authentication, global states
+
+### 4. `useReducer` – Alternative to `useState` for Complex State
+
+**Purpose:**
+
+- Manages complex state logic with actions and reducers (similar to Redux).
+  **Example:**
+
+```
+import { useReducer } from "react";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+    </div>
+  );
+}
+
+```
+
+- Useful for managing state with multiple actions
+- Better than useState for complex updates
+
+### 5. `useMemo` – Optimizes Performance
+
+**Purpose:**
+
+- Memoizes a computed value to prevent unnecessary recalculations.
+  **Example:**
+
+```
+import { useState, useMemo } from "react";
+
+function ExpensiveCalculation({ num }) {
+  const squaredValue = useMemo(() => {
+    console.log("Calculating square...");
+    return num * num;
+  }, [num]); // Recalculates only if `num` changes
+
+  return <p>Squared Value: {squaredValue}</p>;
+}
+
+```
+
+- Avoids recalculating expensive functions unnecessarily
+
+### 6. `useCallback` – Optimizes Function References
+
+**Purpose:**
+
+- Memoizes functions so they don’t get recreated on every render.
+- Prevents unnecessary re-renders in child components.
+  **Example:**
+
+```
+import { useCallback, useState } from "react";
+
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    console.log("Button clicked!");
+  }, []); // Function reference stays the same
+
+  return (
+    <div>
+      <Child onClick={handleClick} />
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+function Child({ onClick }) {
+  console.log("Child re-rendered");
+  return <button onClick={onClick}>Click Me</button>;
+}
+
+```
+
+Prevents unnecessary re-renders of `Child` component
+
+### 7. `useRef` – Manages DOM Elements & Persistent Values
+
+**Purpose:**
+
+- Accesses DOM elements directly (without document.querySelector).
+- Stores mutable values without causing re-renders.
+  **Example 1: Accessing DOM Elements**
+
+```
+import { useRef, useEffect } from "react";
+
+function InputFocus() {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus(); // Focus input on mount
+  }, []);
+
+  return <input ref={inputRef} placeholder="Type here..." />;
+}
+
+```
+
+**Example 2: Storing Persistent Values Without Re-renders**
+
+```
+function Timer() {
+  const countRef = useRef(0);
+
+  function increment() {
+    countRef.current += 1;
+    console.log(countRef.current);
+  }
+
+  return <button onClick={increment}>Increment</button>;
+}
+
+```
+
+- Does not trigger re-renders when `countRef` is updated.
 
 ---
 
-## 54. Explain the purpose of useMemo , useCallback and useRef.
+## 54. What is Redux, and how does it work with React?
+
+### What is Redux?
+
+- **Redux** is a state management library for JavaScript applications, commonly used with React.
+- It helps manage global state in a predictable way, making it easier to handle complex state changes in large applications.
+
+### Why Use Redux with React?
+
+- **Centralized State Management** → Stores the entire app's state in a single source of truth (Redux store).
+- **Predictable State Changes** → State updates follow a strict flow using actions and reducers.
+- **Avoids Prop Drilling** → No need to pass props manually through multiple components.
+- **Better Debugging** → Redux DevTools helps track state changes easily.
+
+**How Redux Works (Key Concepts)**
+Redux follows a unidirectional data flow with these core components:
+
+1. **Store** → The global state container that holds the app’s state.
+2. **Actions** → JavaScript objects that describe what should change in the state.
+3. **Reducers** → Functions that specify how the state should change based on the action.
+4. **Dispatch** → Sends an action to the reducer to update the store.
+5. **Selectors** → Functions to retrieve specific data from the store.
+
+**Redux Workflow with React**
+
+- Step 1: Create Redux Store
+- Step 2: Define Actions & Reducers
+- Step 3: Connect Redux to React using useSelector & useDispatch
+
+**Example: Using Redux with React**
+
+1. Install Redux and React-Redux
+
+Run the following command:
+
+```
+npm install redux react-redux
+
+```
+
+2. Create a Redux Store (store.js)
+
+```
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./counterSlice";
+
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
+export default store;
+
+```
+
+- The store combines all reducers and manages the state globally.
+
+3. Create a Reducer (counterSlice.js)
+
+```
+import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => { state.value += 1; },
+    decrement: (state) => { state.value -= 1; },
+  },
+});
+
+export const { increment, decrement } = counterSlice.actions;
+export default counterSlice.reducer;
+
+
+```
+
+- `initialState` stores the default state of the counter.
+- `reducers` define how state updates when an action is dispatched.
+
+4. Provide the Store to React (index.js)
+
+```
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import App from "./App";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+
+```
+
+- The \<Provider\> component wraps the app, giving all components access to Redux state.
+
+5. Use Redux State in a Component (Counter.js)
+
+```
+
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "./counterSlice";
+
+function Counter() {
+  const count = useSelector((state) => state.counter.value); // Get state
+  const dispatch = useDispatch(); // Send actions
+
+  return (
+    <div>
+      <h1>Counter: {count}</h1>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+    </div>
+  );
+}
+
+export default Counter;
+
+```
+
+- `useSelector()` → Retrieves the state value from Redux Store.
+- `useDispatch()` → Dispatches actions (`increment` and `decrement`) to modify state.
+
+### Redux vs React Context API
+
+| Feature         | Redux                                          | React Context API                  |
+| --------------- | ---------------------------------------------- | ---------------------------------- |
+| **Purpose**     | Manages global state                           | Shares data between components     |
+| **Complexity**  | More structured (Actions, Reducers, Store)     | Simpler (`Provider`, `useContext`) |
+| **Performance** | Optimized for large-scale apps                 | Best for small to medium apps      |
+| **Reusability** | Can be used outside React (e.g., Vue, Angular) | Works only with React              |
 
 ---
 
-## 55. Explain the difference between useState, useEffect, useContext, useMemo , useCallback and useRef.
+## 55. Difference Between SSR (Server-Side Rendering) & CSR (Client-Side Rendering)
+
+## Difference Between SSR and CSR
+
+| Feature                              | SSR (Server-Side Rendering)                                 | CSR (Client-Side Rendering)                       |
+| ------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------- |
+| **Where Rendering Happens?**         | On the **server** before sending HTML to the browser        | In the **browser** using JavaScript               |
+| **Initial Load Time**                | **Faster** (HTML is pre-rendered)                           | **Slower** (JS loads first, then renders content) |
+| **SEO (Search Engine Optimization)** | **Better for SEO** (search engines get fully rendered HTML) | **Not SEO-friendly** (content loads dynamically)  |
+| **Performance**                      | Better for **first-page load**, slower for navigation       | Slower **first load**, faster navigation          |
+| **Time to First Paint (TTFP)**       | **Faster** (HTML is ready)                                  | **Slower** (JS needs to execute)                  |
+| **API Calls**                        | Made **on the server** before rendering                     | Made **on the client** after rendering            |
+| **Example Frameworks**               | **Next.js, Nuxt.js**                                        | **React, Angular (SPA)**                          |
+
+### How SSR (Server-Side Rendering) Works?
+
+1. The client sends a request to the server.
+2. The server generates the full HTML page dynamically.
+3. The complete HTML is sent to the browser.
+4. The page is immediately visible while React hydrates the page for interactivity.
+
+**Best for:** SEO-heavy websites, blogs, news sites.
+
+**Example of SSR with Next.js**
+
+```
+export async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/data");
+  const data = await res.json();
+
+  return {
+    props: { data }, // Passed to the component
+  };
+}
+
+function Page({ data }) {
+  return <div>{data.title}</div>;
+}
+
+export default Page;
+
+
+```
+
+- Data is fetched on the server before rendering.
+
+### How CSR (Client-Side Rendering) Works?
+
+1. The client loads a blank HTML file with a JavaScript bundle.
+2. React executes in the browser and renders the content dynamically.
+3. The app is interactive after JavaScript loads.
+
+**Best for:** Web apps with fewer SEO needs (e.g., dashboards, internal tools).
+
+**Example of CSR in React**
+
+```
+import { useState, useEffect } from "react";
+
+function Page() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("https://api.example.com/data")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+
+  return <div>{data ? data.title : "Loading..."}</div>;
+}
+
+export default Page;
+
+
+```
+
+- Data is fetched in the browser after the page loads.
 
 ---
 
-## 56. What is Redux, and how does it work with React?
+## 55. What are Synthetic Events in React?
 
----
+- Synthetic Events in React are wrapper objects around native browser events.
+- They provide a consistent API across different browsers, ensuring event handling works uniformly.
 
-## 57. What is context API, and how is it used for state management?
+**Why Does React Use Synthetic Events?**
 
----
+- **Cross-Browser Compatibility** → Ensures event behavior is the same in all browsers.
+- **Performance Optimization** → Uses event pooling to reuse event objects, reducing memory usage.
+- **Consistency** → Standardized event properties (e.g., event.target, event.preventDefault()).
+- **Supports Event Delegation** → React uses a single event listener at the root (document), improving performance.
+
+**Example of Synthetic Events in React**
+
+```
+import React from "react";
+
+function Button() {
+  const handleClick = (event) => {
+    console.log("Button clicked!");
+    console.log("Event Type:", event.type); // Synthetic event
+    console.log("Target:", event.target.innerText); // Access event properties
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+
+export default Button;
+
+```
+
+`event.type` → Tells the event type (`click`).
+`event.target` → Refers to the element that triggered the event (`button`).
+
+### Common Synthetic Events in React
+
+## React Event Handlers
+
+| Event Type           | Example Handler                               |
+| -------------------- | --------------------------------------------- |
+| **Click Events**     | `onClick`, `onDoubleClick`                    |
+| **Keyboard Events**  | `onKeyDown`, `onKeyPress`, `onKeyUp`          |
+| **Form Events**      | `onChange`, `onSubmit`, `onFocus`             |
+| **Mouse Events**     | `onMouseEnter`, `onMouseLeave`, `onMouseMove` |
+| **Touch Events**     | `onTouchStart`, `onTouchEnd`                  |
+| **Clipboard Events** | `onCopy`, `onPaste`                           |
+
+### Event Pooling in Synthetic Events
+
+- **Event Pooling** is a performance optimization technique used by React to reuse event objects instead of creating a new event object for every event.
+
+- React recycles the event object and resets its properties after the event callback is executed. This helps in reducing memory consumption and improving performance in large applications.
+
+**How Event Pooling Works?**
+
+1. A synthetic event is created when an event (e.g., onClick) is triggered.
+2. React processes the event and calls the event handler function.
+3. After execution, React clears the event object and reuses it for future events.
+
+- Example of Event Pooling Issue:
+
+```
+function Button() {
+  const handleClick = (event) => {
+    console.log(event.type); // Works
+    setTimeout(() => {
+      console.log(event.type); // Won't work (event nullified)
+    }, 1000);
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+
+```
+
+- `event.type` inside `setTimeout` will be null because of event pooling.
+
+### Fix: Use `event.persist()` to prevent pooling
+
+```
+const handleClick = (event) => {
+  event.persist(); // Prevents event from being nullified
+  setTimeout(() => {
+    console.log(event.type); // Works now
+  }, 1000);
+};
+
+```
